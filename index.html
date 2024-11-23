@@ -263,6 +263,83 @@
         // Call the function to get the user's location
         getSeasonBasedOnLocation();
     </script>
+    <script>
+        // Function to calculate profit
+        document.getElementById("profitForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form from reloading the page
+    
+            const buyingPrice = parseFloat(document.getElementById("buyingPrice").value);
+            const flowersToBuy = parseInt(document.getElementById("flowersToBuy").value);
+    
+            // Validate input
+            if (isNaN(buyingPrice) || buyingPrice <= 0 || isNaN(flowersToBuy) || flowersToBuy <= 0) {
+                document.getElementById("profitMessage").textContent = "Please enter valid values for buying price and number of flowers.";
+                document.getElementById("profitMessage").className = "text-danger";
+                return;
+            }
+    
+            const sellingPrice = buyingPrice * 1.5; // Assume a 50% markup for simplicity
+            const totalCost = buyingPrice * flowersToBuy;
+            const totalRevenue = sellingPrice * flowersToBuy;
+            const profit = totalRevenue - totalCost;
+    
+            // Display profit result
+            document.getElementById("profitMessage").textContent = `Selling at $${sellingPrice.toFixed(2)} per flower, your total profit would be $${profit.toFixed(2)}.`;
+            document.getElementById("profitMessage").className = "text-success";
+        });
+    </script>
+    <script>
+        // Function to calculate profit
+        document.getElementById("profitForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const selectedFlower = document.getElementById("flowerSelector").value;
+            const buyingPrice = parseFloat(document.getElementById("buyingPrice").value);
+            const flowersToBuy = parseInt(document.getElementById("flowersToBuy").value);
+    
+            if (isNaN(buyingPrice) || isNaN(flowersToBuy)) {
+                document.getElementById("profitMessage").textContent = "Please enter valid numeric values.";
+                return;
+            }
+    
+            // Sample logic: Assume a 50% markup for demonstration
+            const sellingPrice = buyingPrice * 1.5;
+            const totalProfit = (sellingPrice - buyingPrice) * flowersToBuy;
+    
+            document.getElementById("profitMessage").innerHTML = `
+                Profit for ${flowersToBuy} ${selectedFlower}(s): 
+                <strong>$${totalProfit.toFixed(2)}</strong>
+            `;
+        });
+    
+        // Ensure flowerSelector is enabled and populated
+        document.getElementById("flowerSelector").disabled = false;
+    
+        function updateSeason(season) {
+            const seasonDescription = seasonData[season].description;
+            document.getElementById("seasonDescription").innerHTML = `<p>${seasonDescription}</p>`;
+    
+            const flowerOptions = flowerSeasons[season];
+            const flowerSelector = document.getElementById("flowerSelector");
+            flowerSelector.innerHTML = ""; // Clear existing options
+            flowerOptions.forEach(flower => {
+                const option = document.createElement("option");
+                option.textContent = flower;
+                flowerSelector.appendChild(option);
+            });
+    
+            document.getElementById("seasonSelector").value = season;
+            document.getElementById("seasonSelector").disabled = false; // Enable season selector
+            flowerSelector.disabled = false; // Enable flower dropdown
+    
+            // Update graphs
+            updateGraphs(season);
+        }
+    
+        // Initialize with the detected season
+        getSeasonBasedOnLocation();
+    </script>
+    
+    
 </body>
 <script src="script.js"></script>
 </html>
